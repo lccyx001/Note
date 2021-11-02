@@ -1,12 +1,14 @@
 # Prerequisites
+jobs.md
 *.d
 计算机/视频压缩/
+py3env/
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
-
+.vscode/
 # Precompiled Headers
 *.gch
 *.pch

@@ -1,13 +1,13 @@
 # effective cpp
 
-## 视 C++ 为一个语言联邦（C、Object-Oriented C++、Template C++、STL)
+## 1. 视 C++ 为一个语言联邦（C、Object-Oriented C++、Template C++、STL)
 
-## 宁可以编译器替换预处理器（尽量以 const、enum、inline 替换 #define）
+## 2. 宁可以编译器替换预处理器（尽量以 const、enum、inline 替换 #define）
 
 对于单纯常量，使用const或者enums代替#defines
 对于形似函数的宏，使用inline代替
 
-## 尽可能使用 const
+## 3. 尽可能使用 const
 
 - const 可以让编译器帮助完成值不变的约束。可以用在作用域内的对象，函数参数，函数返回类型，成员函数本身。
     const 出现在*左边，表示被指物是常量。
@@ -18,34 +18,69 @@
 
 - 当const和non-const成员函数有着实质等价的实现时，另non-const版本调用const版本。
 
-## 确定对象被使用前已先被初始化(构造时赋值（copy 构造函数）比 default 构造后赋值（copy assignment）效率高)
+## 4. 确定对象被使用前已先被初始化(构造时赋值（copy 构造函数）比 default 构造后赋值（copy assignment）效率高)
 
 - 通常使用类C部分的c++代码，不会保证初始化，而使用c++的部分代码会保证初始化（Oriented C++、Template C++、STL）
 - 永远在使用对象前进行初始化
 - 在构造函数中将每一个属性都进行初始化（使用成员初始化列表而不是在构造函数中进行赋值）
 - 为避免跨编译单元初始化次序问题，以 __local static__ 对象替换 __non-local static__ 对象（单例模式*）
 
-## 了解 C++ 默默编写并调用哪些函数（编译器暗自为 class 创建 default 构造函数、copy 构造函数、copy assignment 操作符、析构函数）
+## 5. 了解 C++ 默默编写并调用哪些函数（编译器暗自为 class 创建 default 构造函数、copy 构造函数、copy assignment 操作符、析构函数）
 
 - copy  将来源对象的每一个non-static成员变量拷贝到目标对象
 - copy assignment cpp不会自动生成内含reference成员的类的赋值操作 __operator=__,如果基类的修饰符是private，则不会为派生类生成代码
 - deconstructor  给编译器一个地方，放置默认代码且编译器产出的析构函数是non-virtual的
 - constructor
 
-## 若不想使用编译器自动生成的函数，就应该明确拒绝（将不想使用的成员函数声明为 private，并且不予实现）
+## 6. 若不想使用编译器自动生成的函数，就应该明确拒绝（将不想使用的成员函数声明为 private，并且不予实现）
 
 - 将不想使用的成员函数声明为 private，并且不予实现，或者使用像Uncopyable这样的基类也可以
 
-## 为多态基类声明 virtual 析构函数（如果 class 带有任何 virtual 函数，它就应该拥有一个 virtual 析构函数）
+## 7. 为多态基类声明 virtual 析构函数（如果 class 带有任何 virtual 函数，它就应该拥有一个 virtual 析构函数）
 
 - 如果 class 带有任何 virtual 函数，它就应该拥有一个 virtual 析构函数
 - 如果一个类不是作为基类使用，则不应该为析构函数加virtual
 
-## 别让异常逃离析构函数
+## 8. 别让异常逃离析构函数
 
 - 析构函数应该吞下不传播异常，或者结束程序，而不是吐出异常
 - 如果要处理异常应该在非析构的普通函数处理
 
-## 绝不在构造和析构过程中调用 virtual 函数
+## 9. 绝不在构造和析构过程中调用 virtual 函数
 
 - 因为这类调用从不下降至 derived class
+
+## 10. 令operator= 返回一个 reference to *this
+
+- 一条cpp协议
+
+## 11. 在operator中处理自我赋值
+
+- 证同测试
+- 确保对象自我赋值时不会出错
+- 确保任何函数操作一个以上的对象时，其中多个对象是同一个对象时，其行为仍热正确
+
+## 12. 复制对象时，不要忘记每一个成分
+
+- 不要尝试以某个copy函数实现另一个copy函数，应该将共同逻辑放入第三个函数中，然后由前两个copy函数共同调用
+
+## 13. 以对象管理资源
+
+- 将资源放入对象内，便可通过cpp的"析构函数自动调用"机制确保资源被释放
+- RAII（资源取得时机就是初始化时机）
+- 别让多个auto_ptr指向同一个对象
+- 两个常使用的RAII对象是 shared_ptr 和 auto_ptr，前者通常是较佳选择，copy行为比较直观，auto_ptr 复制动作会使被复制物指向null
+
+## 14. 在资源管理类中小心copy行为
+
+- 单例模式，锁对象禁止复制
+- 常用的copy行为有 禁止复制 引用计数等
+
+## 15. 在资源管理类中提供对原始资源的访问
+
+- API通常需要对原始资源进行访问，所以RAII 类应该提供一个获取原始资源的方法
+- 对原始资源的访问可以提供显式或隐式两种方案，显式安全，隐式方便使用
+
+## 16. new和delete成对使用，采用相同形式
+
+- new 时使用 __[]__ delete时也要使用 __[]__
