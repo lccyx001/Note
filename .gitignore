@@ -9,6 +9,8 @@ py3env/
 *.o
 *.obj
 .vscode/
+data/
+code/
 # Precompiled Headers
 *.gch
 *.pch
