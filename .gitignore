@@ -11,6 +11,7 @@ py3env/
 .vscode/
 data/
 code/
+jobs/
 # Precompiled Headers
 *.gch
 *.pch
