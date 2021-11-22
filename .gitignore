@@ -1,17 +1,22 @@
 # Prerequisites
 jobs.md
 *.d
+
+
+# Directorys
 计算机/视频压缩/
 py3env/
+.vscode/
+data/
+code/
+jobs/
+*.mindnode/
 # Compiled Object files
 *.slo
 *.lo
 *.o
 *.obj
-.vscode/
-data/
-code/
-jobs/
+
 # Precompiled Headers
 *.gch
 *.pch
@@ -35,3 +40,4 @@ jobs/
 *.exe
 *.out
 *.app
+
