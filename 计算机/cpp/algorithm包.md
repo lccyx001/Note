@@ -1,7 +1,7 @@
 # algorithm
 
 ```cpp
-//sort 
+//sort 排序
 bool strlcmp(string i, string j)
 {
     return i.size() < j.size();
