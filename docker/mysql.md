@@ -48,4 +48,3 @@ ALTER USER 'test'@'%' IDENTIFIED WITH mysql_native_password BY 'test123';
 ```
 
 ## 4 测试连接
-
